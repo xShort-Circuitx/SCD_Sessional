@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - menu-service
+      - order-service
+      - payment-service
+      - inventory-service
+      - customer-service
+
+  menu-service:
+    build:
+      context: ./menu-services
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongodb
+
+  order-service:
+    build:
+      context: ./order-services
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongodb
+
+  payment-service:
+    build:
+      context: ./payment-services
+    ports:
+      - "3003:3003"
+    depends_on:
+      - mongodb
+
+  inventory-service:
+    build:
+      context: ./inventory-services
+    ports:
+      - "3004:3004"
+    depends_on:
+      - mongodb
+
+  customer-service:
+    build:
+      context: ./customer-services
+    ports:
+      - "3005:3005"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
